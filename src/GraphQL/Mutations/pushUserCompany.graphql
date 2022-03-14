@@ -1,0 +1,3 @@
+mutation pushUserCompany($docID: String!, $companyID: String!) {
+    pushUserCompany(docID: $docID, companyID: $companyID)
+}

@@ -1,0 +1,3 @@
+mutation CreateCompany($logo: String!, $owner: String!, $location: String!, $name: String!) {
+    createCompany(logo: $logo, owner: $owner, location: $location, name: $name)
+}

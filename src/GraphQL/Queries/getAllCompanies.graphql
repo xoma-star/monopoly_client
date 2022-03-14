@@ -1,0 +1,5 @@
+query GetAllCompanies($filters: [FiltersInput!], $offset: Int) {
+    getAllCompanies(filters: $filters, offset: $offset) {
+        id, name, logo
+    }
+}

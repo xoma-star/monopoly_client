@@ -1,0 +1,3 @@
+mutation CreateUser($vkUserId: Float!) {
+    createUser(vkUserID: $vkUserId)
+}

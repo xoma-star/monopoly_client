@@ -1,0 +1,3 @@
+mutation TransferBalanceToCompany($docID: String!, $companyID: String!, $value: Float!) {
+    transferBalanceToCompany(docID: $docID, companyID: $companyID, value: $value)
+}
