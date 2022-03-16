@@ -33,7 +33,9 @@ export type Company = {
   name: Scalars['String'];
   /** firebase doc id */
   owner: Scalars['String'];
-  /** производство */
+  /** id производственных линий */
+  prodLines: Array<Scalars['String']>;
+  /** производство deprecated */
   production?: Maybe<Production>;
   /** дата основания компании */
   registered: Scalars['Float'];
@@ -71,6 +73,7 @@ export type FiltersInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCompany: Scalars['String'];
+  createProdLine: Scalars['Float'];
   createUser: Scalars['String'];
   pushUserCompany: Scalars['Boolean'];
   transferBalanceToCompany: Scalars['Int'];
@@ -82,6 +85,11 @@ export type MutationCreateCompanyArgs = {
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   owner: Scalars['String'];
+};
+
+
+export type MutationCreateProdLineArgs = {
+  companyID: Scalars['String'];
 };
 
 
@@ -134,10 +142,22 @@ export type Production = {
   type: Product;
 };
 
+export type ProductionLine = {
+  __typename?: 'ProductionLine';
+  /** работает ли сейчас */
+  active: Scalars['Boolean'];
+  id: Scalars['String'];
+  /** id компании */
+  owner: Scalars['String'];
+  /** производимый продукт */
+  product?: Maybe<Product>;
+};
+
 export type Query = {
   __typename?: 'Query';
   company?: Maybe<Company>;
   getAllCompanies: Array<Company>;
+  getProdLines: Array<ProductionLine>;
   getProductMeta: Array<Product>;
 };
 
@@ -150,6 +170,11 @@ export type QueryCompanyArgs = {
 export type QueryGetAllCompaniesArgs = {
   filters?: InputMaybe<Array<FiltersInput>>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetProdLinesArgs = {
+  owner?: InputMaybe<Scalars['String']>;
 };
 
 export type Warehouse = {
@@ -196,6 +221,13 @@ export type CreateCompanyMutationVariables = Exact<{
 
 export type CreateCompanyMutation = { __typename?: 'Mutation', createCompany: string };
 
+export type CreateProductionLineMutationVariables = Exact<{
+  companyID: Scalars['String'];
+}>;
+
+
+export type CreateProductionLineMutation = { __typename?: 'Mutation', createProdLine: number };
+
 export type PushUserCompanyMutationVariables = Exact<{
   docID: Scalars['String'];
   companyID: Scalars['String'];
@@ -228,12 +260,19 @@ export type GetAllCompaniesQueryVariables = Exact<{
 
 export type GetAllCompaniesQuery = { __typename?: 'Query', getAllCompanies: Array<{ __typename?: 'Company', id: string, name: string, logo: string }> };
 
+export type GetAllProdLinesQueryVariables = Exact<{
+  owner?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetAllProdLinesQuery = { __typename?: 'Query', getProdLines: Array<{ __typename?: 'ProductionLine', id: string, product?: { __typename?: 'Product', type: string } | null }> };
+
 export type CompanyQueryVariables = Exact<{
   companyId: Scalars['String'];
 }>;
 
 
-export type CompanyQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: string, name: string, location: string, logo: string, owner: string, balance: number, registered: number, workers: { __typename?: 'Workers', highEducated: number, total: number }, contracts: Array<{ __typename?: 'Contract', id: string }>, warehouses: Array<{ __typename?: 'Warehouse', total: number, stored: { __typename?: 'WarehouseProduct', count: number, spaceRequirements: number } }>, production?: { __typename?: 'Production', type: { __typename?: 'Product', type: string } } | null } | null };
+export type CompanyQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: string, name: string, location: string, logo: string, owner: string, balance: number, registered: number, prodLines: Array<string>, workers: { __typename?: 'Workers', highEducated: number, total: number }, contracts: Array<{ __typename?: 'Contract', id: string }>, warehouses: Array<{ __typename?: 'Warehouse', total: number, stored: { __typename?: 'WarehouseProduct', count: number, spaceRequirements: number } }>, production?: { __typename?: 'Production', type: { __typename?: 'Product', type: string } } | null } | null };
 
 export type GetProductMetaQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -275,6 +314,37 @@ export function useCreateCompanyMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateCompanyMutationHookResult = ReturnType<typeof useCreateCompanyMutation>;
 export type CreateCompanyMutationResult = Apollo.MutationResult<CreateCompanyMutation>;
 export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<CreateCompanyMutation, CreateCompanyMutationVariables>;
+export const CreateProductionLineDocument = gql`
+    mutation CreateProductionLine($companyID: String!) {
+  createProdLine(companyID: $companyID)
+}
+    `;
+export type CreateProductionLineMutationFn = Apollo.MutationFunction<CreateProductionLineMutation, CreateProductionLineMutationVariables>;
+
+/**
+ * __useCreateProductionLineMutation__
+ *
+ * To run a mutation, you first call `useCreateProductionLineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductionLineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductionLineMutation, { data, loading, error }] = useCreateProductionLineMutation({
+ *   variables: {
+ *      companyID: // value for 'companyID'
+ *   },
+ * });
+ */
+export function useCreateProductionLineMutation(baseOptions?: Apollo.MutationHookOptions<CreateProductionLineMutation, CreateProductionLineMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateProductionLineMutation, CreateProductionLineMutationVariables>(CreateProductionLineDocument, options);
+      }
+export type CreateProductionLineMutationHookResult = ReturnType<typeof useCreateProductionLineMutation>;
+export type CreateProductionLineMutationResult = Apollo.MutationResult<CreateProductionLineMutation>;
+export type CreateProductionLineMutationOptions = Apollo.BaseMutationOptions<CreateProductionLineMutation, CreateProductionLineMutationVariables>;
 export const PushUserCompanyDocument = gql`
     mutation pushUserCompany($docID: String!, $companyID: String!) {
   pushUserCompany(docID: $docID, companyID: $companyID)
@@ -409,6 +479,44 @@ export function useGetAllCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllCompaniesQueryHookResult = ReturnType<typeof useGetAllCompaniesQuery>;
 export type GetAllCompaniesLazyQueryHookResult = ReturnType<typeof useGetAllCompaniesLazyQuery>;
 export type GetAllCompaniesQueryResult = Apollo.QueryResult<GetAllCompaniesQuery, GetAllCompaniesQueryVariables>;
+export const GetAllProdLinesDocument = gql`
+    query GetAllProdLines($owner: String) {
+  getProdLines(owner: $owner) {
+    id
+    product {
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllProdLinesQuery__
+ *
+ * To run a query within a React component, call `useGetAllProdLinesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllProdLinesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllProdLinesQuery({
+ *   variables: {
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function useGetAllProdLinesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllProdLinesQuery, GetAllProdLinesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllProdLinesQuery, GetAllProdLinesQueryVariables>(GetAllProdLinesDocument, options);
+      }
+export function useGetAllProdLinesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllProdLinesQuery, GetAllProdLinesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllProdLinesQuery, GetAllProdLinesQueryVariables>(GetAllProdLinesDocument, options);
+        }
+export type GetAllProdLinesQueryHookResult = ReturnType<typeof useGetAllProdLinesQuery>;
+export type GetAllProdLinesLazyQueryHookResult = ReturnType<typeof useGetAllProdLinesLazyQuery>;
+export type GetAllProdLinesQueryResult = Apollo.QueryResult<GetAllProdLinesQuery, GetAllProdLinesQueryVariables>;
 export const CompanyDocument = gql`
     query Company($companyId: String!) {
   company(id: $companyId) {
@@ -438,6 +546,7 @@ export const CompanyDocument = gql`
       }
     }
     registered
+    prodLines
   }
 }
     `;

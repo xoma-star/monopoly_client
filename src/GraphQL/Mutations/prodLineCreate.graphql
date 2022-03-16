@@ -1,0 +1,3 @@
+mutation CreateProductionLine($companyID: String!) {
+    createProdLine(companyID: $companyID)
+}

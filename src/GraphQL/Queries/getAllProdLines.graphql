@@ -1,0 +1,8 @@
+query GetAllProdLines($owner: String) {
+    getProdLines(owner: $owner) {
+        id
+        product{
+            type
+        }
+    }
+}

@@ -18,7 +18,7 @@ export const IOSLikeIconSmall = ({icon, header, colorScheme, onClick}: props) =>
     return <HorizontalCell
         style={{margin: 'auto'}}
         size={'s'}
-        header={<Caption level={'1'} weight={'regular'}>{header}</Caption>}
+        header={<Caption style={{wordBreak: 'break-word'}} level={'1'} weight={'regular'}>{header}</Caption>}
         onClick={() => {
             if (onClick) onClick()
         }}

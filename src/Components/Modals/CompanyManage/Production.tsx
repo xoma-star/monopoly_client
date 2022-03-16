@@ -13,12 +13,13 @@ import {IOSLikeIconSmall} from "../../Common/IOSLikeIconSmall";
 import {
     Icon16Done, Icon16ErrorCircleFill,
     Icon28DiamondOutline,
-    Icon28MoneyRequestOutline, Icon28SettingsOutline,
+    Icon28MoneyRequestOutline, Icon28OnOffOutline, Icon28SettingsOutline,
     Icon28SpeedometerMiddleOutline
 } from "@vkontakte/icons";
 import {useActions} from "../../../Hooks/useActions";
 import {VKUIModals} from "../../../Redux/Reducers/vkui";
-import {useGetProductMetaQuery} from "../../../generated/graphql";
+import {useCompanyQuery, useGetAllProdLinesQuery, useGetProductMetaQuery} from "../../../generated/graphql";
+import {useTypedSelector} from "../../../Hooks/useTypedSelector";
 
 interface props {
 
@@ -26,7 +27,9 @@ interface props {
 
 export const CompanyManageProductionModal = () => {
     const {VKUIModalSet} = useActions()
-    const product = useGetProductMetaQuery({fetchPolicy: "network-only"})
+    const VKUI = useTypedSelector(s => s.vkui)
+    const {data} = useGetAllProdLinesQuery({variables: {owner: VKUI.activeCompanyOverview}})
+
     return <React.Fragment>
         <ModalPageHeader left={<PanelHeaderClose onClick={() => VKUIModalSet(null)}/>}>
             Производство
@@ -34,21 +37,29 @@ export const CompanyManageProductionModal = () => {
         <Group>
             <HorizontalScroll>
                 <div style={{display: 'flex'}}>
-                    <IOSLikeIconSmall icon={<Icon28DiamondOutline/>} header={'Тип'} colorScheme={'blue'}/>
-                    <IOSLikeIconSmall onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_FINANCIAL_ADD_CARD)} icon={<Icon28SpeedometerMiddleOutline/>} header={'Мощность'} colorScheme={'peach'}/>
+                    <IOSLikeIconSmall
+                        onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_PRODUCTION_NEW)}
+                        icon={<Icon28DiamondOutline/>}
+                        header={'Новая линия'}
+                        colorScheme={'blue'}/>
+                    <IOSLikeIconSmall
+                        onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_FINANCIAL_ADD_CARD)}
+                        icon={<Icon28SpeedometerMiddleOutline/>}
+                        header={'Мощность'}
+                        colorScheme={'peach'}
+                    />
                 </div>
             </HorizontalScroll>
         </Group>
-        <Group>
-            <Cell description={'сейчас производится'} before={<Avatar><Icon28SettingsOutline className={'spinningAccent'}/></Avatar>}>
-                Процессоры
-            </Cell>
-            <div style={{padding: 10}}>
-                <Spacing size={10}/>
-                <Progress style={{height: 8, borderRadius: 50}} value={47}/>
-                <Spacing size={20}/>
-                <Button mode={'secondary'} stretched>Отмена</Button>
-            </div>
+        <Group header={<Header mode={'secondary'}>линии</Header>}>
+            {data?.getProdLines.map((v, i) => {
+                return <Cell key={i+'line'} description={`линия ${i+1}`} before={<Avatar>{
+                    v.product ? <Icon28SettingsOutline className={'spinningAccent'}/> :
+                        <Icon28OnOffOutline style={{color: 'var(--dynamic_red)'}}/>
+                }</Avatar>}>
+                    {v.product ? v.product : 'Пустая линия'}
+                </Cell>
+            })}
         </Group>
         <Group header={<Header mode={'secondary'}>требуемые ресурсы</Header>}>
             <MiniInfoCell before={<Icon16Done width={20} height={20}/>} after={'5/5'}>Алюминий</MiniInfoCell>
