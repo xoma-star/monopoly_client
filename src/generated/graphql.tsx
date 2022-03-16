@@ -105,7 +105,7 @@ export type MutationTransferBalanceToCompanyArgs = {
 export type Product = {
   __typename?: 'Product';
   /** затраты ресурсов на 1 ед. продукта */
-  requires: ProductRequirements;
+  requires: Array<ProductRequirements>;
   /** требование высшее образование */
   requiresHighEducation: Scalars['Boolean'];
   /** сколько места занимает 1 ед. продукта */
@@ -138,6 +138,7 @@ export type Query = {
   __typename?: 'Query';
   company?: Maybe<Company>;
   getAllCompanies: Array<Company>;
+  getProductMeta: Array<Product>;
 };
 
 
@@ -164,7 +165,7 @@ export type WarehouseProduct = {
   /** хранимое кол-во */
   count: Scalars['Float'];
   /** затраты ресурсов на 1 ед. продукта */
-  requires: ProductRequirements;
+  requires: Array<ProductRequirements>;
   /** требование высшее образование */
   requiresHighEducation: Scalars['Boolean'];
   /** сколько места занимает 1 ед. продукта */
@@ -233,6 +234,11 @@ export type CompanyQueryVariables = Exact<{
 
 
 export type CompanyQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: string, name: string, location: string, logo: string, owner: string, balance: number, registered: number, workers: { __typename?: 'Workers', highEducated: number, total: number }, contracts: Array<{ __typename?: 'Contract', id: string }>, warehouses: Array<{ __typename?: 'Warehouse', total: number, stored: { __typename?: 'WarehouseProduct', count: number, spaceRequirements: number } }>, production?: { __typename?: 'Production', type: { __typename?: 'Product', type: string } } | null } | null };
+
+export type GetProductMetaQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetProductMetaQuery = { __typename?: 'Query', getProductMeta: Array<{ __typename?: 'Product', type: string, timeCosts: number, requires: Array<{ __typename?: 'ProductRequirements', type: string, count: number }> }> };
 
 
 export const CreateCompanyDocument = gql`
@@ -463,3 +469,42 @@ export function useCompanyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Co
 export type CompanyQueryHookResult = ReturnType<typeof useCompanyQuery>;
 export type CompanyLazyQueryHookResult = ReturnType<typeof useCompanyLazyQuery>;
 export type CompanyQueryResult = Apollo.QueryResult<CompanyQuery, CompanyQueryVariables>;
+export const GetProductMetaDocument = gql`
+    query GetProductMeta {
+  getProductMeta {
+    type
+    requires {
+      type
+      count
+    }
+    timeCosts
+  }
+}
+    `;
+
+/**
+ * __useGetProductMetaQuery__
+ *
+ * To run a query within a React component, call `useGetProductMetaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductMetaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductMetaQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetProductMetaQuery(baseOptions?: Apollo.QueryHookOptions<GetProductMetaQuery, GetProductMetaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProductMetaQuery, GetProductMetaQueryVariables>(GetProductMetaDocument, options);
+      }
+export function useGetProductMetaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProductMetaQuery, GetProductMetaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProductMetaQuery, GetProductMetaQueryVariables>(GetProductMetaDocument, options);
+        }
+export type GetProductMetaQueryHookResult = ReturnType<typeof useGetProductMetaQuery>;
+export type GetProductMetaLazyQueryHookResult = ReturnType<typeof useGetProductMetaLazyQuery>;
+export type GetProductMetaQueryResult = Apollo.QueryResult<GetProductMetaQuery, GetProductMetaQueryVariables>;

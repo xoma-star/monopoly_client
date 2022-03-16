@@ -18,6 +18,7 @@ import {
 } from "@vkontakte/icons";
 import {useActions} from "../../../Hooks/useActions";
 import {VKUIModals} from "../../../Redux/Reducers/vkui";
+import {useGetProductMetaQuery} from "../../../generated/graphql";
 
 interface props {
 
@@ -25,6 +26,7 @@ interface props {
 
 export const CompanyManageProductionModal = () => {
     const {VKUIModalSet} = useActions()
+    const product = useGetProductMetaQuery({fetchPolicy: "network-only"})
     return <React.Fragment>
         <ModalPageHeader left={<PanelHeaderClose onClick={() => VKUIModalSet(null)}/>}>
             Производство

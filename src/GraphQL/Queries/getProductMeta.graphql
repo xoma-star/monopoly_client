@@ -1,0 +1,10 @@
+query GetProductMeta {
+    getProductMeta {
+        type
+        requires{
+            type
+            count
+        }
+        timeCosts
+    }
+}
