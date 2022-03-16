@@ -8,7 +8,7 @@ import {CompanyManageFinancialModal} from "./CompanyManage/Financial";
 import {FinancialModalCardAdd} from "./CompanyManage/FinancialAddCard";
 import {CompanyManageWorkersModal} from "./CompanyManage/WorkersManage";
 import {CompanyManageWarehousesModal} from "./CompanyManage/Warehouses";
-import {CompanyManageProductionModal} from "./CompanyManage/Production";
+import CompanyManageProductionModal from "./CompanyManage/Production";
 import {CompanyManageProductionNewModal} from "./CompanyManage/ProductionNew";
 
 interface props{
@@ -23,7 +23,7 @@ export const RootModal = ({activeModal}: props) => {
         <FinancialModalCardAdd id={VKUIModals.COMPANY_MANAGE_FINANCIAL_WITHDRAW_CARD} withdraw={true}/>
         <ModalPage id={VKUIModals.COMPANY_MANAGE_WORKERS} children={<CompanyManageWorkersModal/>}/>
         <ModalPage id={VKUIModals.COMPANY_MANAGE_WAREHOUSES} children={<CompanyManageWarehousesModal/>}/>
-        <ModalPage id={VKUIModals.COMPANY_MANAGE_PRODUCTION} children={<CompanyManageProductionModal/>}/>
+        <ModalPage id={VKUIModals.COMPANY_MANAGE_PRODUCTION} children={<CompanyManageProductionModal/>} dynamicContentHeight/>
         <ModalPage id={VKUIModals.COMPANY_MANAGE_PRODUCTION_NEW} children={<CompanyManageProductionNewModal/>} dynamicContentHeight/>
     </ModalRoot>
 }

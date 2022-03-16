@@ -1,34 +1,37 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import PropTypes from 'prop-types'
 import {
-    Avatar, Button, Caption,
+    Avatar, Caption,
     Cell,
     Group,
     Header,
     HorizontalScroll, MiniInfoCell,
     ModalPageHeader,
-    PanelHeaderClose, Progress, Spacing,
-    Spinner
+    PanelHeaderClose, withModalRootContext
 } from "@vkontakte/vkui";
 import {IOSLikeIconSmall} from "../../Common/IOSLikeIconSmall";
 import {
     Icon16Done, Icon16ErrorCircleFill,
     Icon28DiamondOutline,
-    Icon28MoneyRequestOutline, Icon28OnOffOutline, Icon28SettingsOutline,
+    Icon28OnOffOutline, Icon28SettingsOutline,
     Icon28SpeedometerMiddleOutline
 } from "@vkontakte/icons";
 import {useActions} from "../../../Hooks/useActions";
 import {VKUIModals} from "../../../Redux/Reducers/vkui";
-import {useCompanyQuery, useGetAllProdLinesQuery, useGetProductMetaQuery} from "../../../generated/graphql";
+import {useGetAllProdLinesQuery} from "../../../generated/graphql";
 import {useTypedSelector} from "../../../Hooks/useTypedSelector";
 
 interface props {
-
+    updateModalHeight: any
 }
 
-export const CompanyManageProductionModal = () => {
+const CompanyManageProductionModal = ({updateModalHeight}: props) => {
     const {VKUIModalSet} = useActions()
     const VKUI = useTypedSelector(s => s.vkui)
     const {data} = useGetAllProdLinesQuery({variables: {owner: VKUI.activeCompanyOverview}})
+    useEffect(() => {
+        updateModalHeight()
+    }, [data])
 
     return <React.Fragment>
         <ModalPageHeader left={<PanelHeaderClose onClick={() => VKUIModalSet(null)}/>}>
@@ -70,3 +73,9 @@ export const CompanyManageProductionModal = () => {
         </Group>
     </React.Fragment>
 }
+
+CompanyManageProductionModal.propTypes = {
+    updateModalHeight: PropTypes.func
+}
+
+export default withModalRootContext(CompanyManageProductionModal)
