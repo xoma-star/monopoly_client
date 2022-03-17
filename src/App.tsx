@@ -9,7 +9,6 @@ import {
     Root,
     ScreenSpinner,
     SplitLayout,
-    useAppearance,
     View
 } from "@vkontakte/vkui";
 import WelcomePanel from "./Components/Panels/Welcome";
@@ -30,9 +29,8 @@ const App = () => {
     const VKUI = useTypedSelector(s => s.vkui)
     const user = useTypedSelector(s => s.user)
     const screenSpinnerCondition = !user.docId
-    const appearance = useAppearance()
 
-    return <ConfigProvider appearance={appearance} platform={Platform.IOS}>
+    return <ConfigProvider scheme={VKUI.scheme} platform={Platform.IOS}>
         <AdaptivityProvider>
             <AppRoot>
                 <SplitLayout modal={<RootModal activeModal={getLast(VKUI.modal)}/>} popout={screenSpinnerCondition && <ScreenSpinner/>}>

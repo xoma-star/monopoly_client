@@ -1,5 +1,6 @@
 import {VKUIAction, VKUIActionTypes, VKUIhistory, VKUIModals} from "../Reducers/vkui";
 import {Dispatch} from "redux";
+import {AppearanceSchemeType} from "@vkontakte/vk-bridge";
 
 // export const setActivePanel = (panel: string) => {
 //     alert('deprecated')
@@ -36,5 +37,11 @@ export const VKUIHistoryBack = () => {
 export const VKUIModalSet = (p: null | VKUIModals) => {
     return (dispatch: Dispatch<VKUIAction>) => {
         dispatch({type: VKUIActionTypes.SET_MODAL, payload: p})
+    }
+}
+
+export const VKUISchemeSet = (p: AppearanceSchemeType) => {
+    return (dispatch: Dispatch<VKUIAction>) => {
+        dispatch({type: VKUIActionTypes.SET_APPEARANCE, payload: p})
     }
 }

@@ -1,5 +1,5 @@
 import {VKUI_PANELS} from "../../Constants/VKUI";
-import React from "react";
+import {AppearanceSchemeType} from "@vkontakte/vk-bridge";
 
 export type VKUIhistory = {
     view: string,
@@ -12,7 +12,8 @@ export enum VKUIActionTypes {
     SET_ACTIVE_COMPANY_OVERVIEW = 'SET_ACTIVE_COMPANY_OVERVIEW',
     HISTORY_BACK = 'HISTORY_BACK',
     HISTORY_PUSH = 'HISTORY_ADD',
-    SET_MODAL = 'SET_MODAL'
+    SET_MODAL = 'SET_MODAL',
+    SET_APPEARANCE = 'SET_APPEARANCE'
 }
 
 export enum VKUIModals {
@@ -30,7 +31,8 @@ interface State {
     panel: string,
     activeCompanyOverview: string,
     history: VKUIhistory[],
-    modal: (null | VKUIModals)[]
+    modal: (null | VKUIModals)[],
+    scheme: AppearanceSchemeType
 }
 
 interface StringVKUIAction{
@@ -48,15 +50,20 @@ interface HistoryVKUIAction{
 interface HistoryVKUIActionPop{
     type: VKUIActionTypes.HISTORY_BACK
 }
+interface SchemeVKUIAction{
+    type: VKUIActionTypes.SET_APPEARANCE,
+    payload: AppearanceSchemeType
+}
 
-export type VKUIAction = StringVKUIAction | HistoryVKUIAction | HistoryVKUIActionPop | ModalVKUIAction
+export type VKUIAction = StringVKUIAction | HistoryVKUIAction | HistoryVKUIActionPop | ModalVKUIAction | SchemeVKUIAction
 
 const defaultState: State = {
     view: 'main',
     panel: 'welcome',
     activeCompanyOverview: "",
     history: [{view: 'main', panel: VKUI_PANELS.MAIN}],
-    modal: [null]
+    modal: [null],
+    scheme: 'bright_light'
 }
 
 export const vkuiReducer = (state: State = defaultState, action: VKUIAction): State => {
@@ -74,6 +81,8 @@ export const vkuiReducer = (state: State = defaultState, action: VKUIAction): St
             if(action.payload) mh.push(action.payload)
             else if(mh.length > 1) mh.pop()
             return {...state, modal: mh}
+        case VKUIActionTypes.SET_APPEARANCE:
+            return {...state, scheme: action.payload}
         default:
             return state
     }
