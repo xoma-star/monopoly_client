@@ -22,8 +22,10 @@ import {CompaniesPanel} from "./Components/Panels/Companies";
 import {CompanyManagePanel} from "./Components/Panels/CompanyManage";
 import {getLast} from "./Functions/getLast";
 import {RootModal} from "./Components/Modals";
+import {useVKBridge} from "./Hooks/useVKBridge";
 
 const App = () => {
+    useVKBridge()
     useFirebase()
     const VKUI = useTypedSelector(s => s.vkui)
     const user = useTypedSelector(s => s.user)
