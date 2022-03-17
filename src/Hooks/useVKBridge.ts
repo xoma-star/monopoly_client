@@ -7,6 +7,7 @@ export const useVKBridge = () => {
         bridge.subscribe(event => {
             switch (event.detail.type){
                 case 'VKWebAppUpdateConfig':
+                    console.log(event.detail.data.scheme)
                     VKUISchemeSet(event.detail.data.scheme)
                     break
                 default:
