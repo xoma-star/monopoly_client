@@ -21,9 +21,9 @@ export const CompanyManageWorkersModal = () => {
             <HorizontalScroll>
                 <div style={{display: 'flex'}}>
                     <IOSLikeIconSmall
-                        onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_FINANCIAL_ADD_CARD)}
+                        onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_WORKERS_VACANCY)}
                         icon={<Icon20UsersOutline width={28} height={28}/>}
-                        header={'Нанять'}
+                        header={'Вакансии'}
                         colorScheme={'peach'}/>
                     <IOSLikeIconSmall
                         onClick={() => VKUIModalSet(VKUIModals.COMPANY_MANAGE_FINANCIAL_WITHDRAW_CARD)}
