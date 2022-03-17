@@ -63,7 +63,7 @@ const defaultState: State = {
     activeCompanyOverview: "",
     history: [{view: 'main', panel: VKUI_PANELS.MAIN}],
     modal: [null],
-    scheme: 'bright_light'
+    scheme: 'space_gray'
 }
 
 export const vkuiReducer = (state: State = defaultState, action: VKUIAction): State => {
