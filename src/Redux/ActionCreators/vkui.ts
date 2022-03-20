@@ -31,7 +31,6 @@ export const VKUIhistoryPush = (p: VKUIhistory) => {
 
 export const VKUIHistoryBack = () => {
     return (dispatch: Dispatch<VKUIAction>) => {
-        window.history.back()
         dispatch({type: VKUIActionTypes.HISTORY_BACK})
     }
 }
@@ -39,7 +38,6 @@ export const VKUIHistoryBack = () => {
 export const VKUIModalSet = (p: null | VKUIModals) => {
     return (dispatch: Dispatch<VKUIAction>) => {
         window.history.pushState({}, '')
-        if(p === null) window.history.back()
         dispatch({type: VKUIActionTypes.SET_MODAL, payload: p})
     }
 }
