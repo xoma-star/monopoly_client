@@ -6,11 +6,8 @@ import {CreateCompanyBottomButton} from "../../Common/Blocks/CreateCompanyBottom
 import {useTypedSelector} from "../../../Hooks/useTypedSelector";
 
 export const MainPanel = () => {
-    const VKUI = useTypedSelector(s => s.vkui)
     return <React.Fragment>
         <WelcomeRow/>
-        {VKUI.history.map(v => `${v.view} ${v.panel}\n`)}
-        {VKUI.modal.map(v => `${v}\n`)}
         <FastActionsRow/>
         <NewsBlock style={{marginTop: 40}} count={1} showNext/>
         <CreateCompanyBottomButton/>
