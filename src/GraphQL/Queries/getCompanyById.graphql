@@ -1,13 +1,11 @@
 query Company($companyId: String!) {
     company(id: $companyId) {
         id, name, location, logo, owner
-        workers{
-            highEducated, total
-        }
         balance
         contracts{
             id
         }
+        recruiting
         warehouses{
             total
             stored{
@@ -22,5 +20,19 @@ query Company($companyId: String!) {
         }
         registered
         prodLines
+        summaries{
+            salary
+            gender
+            name
+            baseProduction
+            highEducated
+        }
+        workers{
+            salary
+            gender
+            name
+            baseProduction
+            highEducated
+        }
     }
 }

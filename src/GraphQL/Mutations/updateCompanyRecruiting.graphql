@@ -1,0 +1,3 @@
+mutation SetCompanyRecruiting($companyID: String!, $value: Boolean!) {
+    switchRecruiting(companyID: $companyID, value: $value)
+}

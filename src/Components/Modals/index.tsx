@@ -11,6 +11,7 @@ import {CompanyManageWarehousesModal} from "./CompanyManage/Warehouses";
 import CompanyManageProductionModal from "./CompanyManage/Production";
 import {CompanyManageProductionNewModal} from "./CompanyManage/ProductionNew";
 import {WorkersVacancyCard} from "./CompanyManage/VacancyCard";
+import {CompanyManageSummaries} from "./CompanyManage/Summaries";
 
 interface props{
     activeModal: string | null
@@ -27,5 +28,6 @@ export const RootModal = ({activeModal}: props) => {
         <ModalPage id={VKUIModals.COMPANY_MANAGE_PRODUCTION} children={<CompanyManageProductionModal/>} dynamicContentHeight/>
         <ModalPage id={VKUIModals.COMPANY_MANAGE_PRODUCTION_NEW} children={<CompanyManageProductionNewModal/>} dynamicContentHeight/>
         <WorkersVacancyCard id={VKUIModals.COMPANY_MANAGE_WORKERS_VACANCY} />
+        <ModalPage id={VKUIModals.COMPANY_MANAGE_WORKERS_SUMMARIES} children={<CompanyManageSummaries/>} dynamicContentHeight/>
     </ModalRoot>
 }

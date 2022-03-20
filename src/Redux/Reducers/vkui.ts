@@ -24,7 +24,8 @@ export enum VKUIModals {
     COMPANY_MANAGE_WAREHOUSES = 'COMPANY_MANAGE_WAREHOUSES',
     COMPANY_MANAGE_PRODUCTION = 'COMPANY_MANAGE_PRODUCTION',
     COMPANY_MANAGE_PRODUCTION_NEW = 'COMPANY_MANAGE_PRODUCTION_NEW',
-    COMPANY_MANAGE_WORKERS_VACANCY = 'COMPANY_MANAGE_WORKERS_VACANCY'
+    COMPANY_MANAGE_WORKERS_VACANCY = 'COMPANY_MANAGE_WORKERS_VACANCY',
+    COMPANY_MANAGE_WORKERS_SUMMARIES = 'COMPANY_MANAGE_WORKERS_SUMMARIES'
 }
 
 interface State {
@@ -64,7 +65,7 @@ const defaultState: State = {
     activeCompanyOverview: "",
     history: [{view: 'main', panel: VKUI_PANELS.MAIN}],
     modal: [null],
-    scheme: 'space_gray'
+    scheme: 'bright_light'
 }
 
 export const vkuiReducer = (state: State = defaultState, action: VKUIAction): State => {

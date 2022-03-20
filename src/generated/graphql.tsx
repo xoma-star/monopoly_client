@@ -37,12 +37,16 @@ export type Company = {
   prodLines: Array<Scalars['String']>;
   /** производство deprecated */
   production?: Maybe<Production>;
+  /** ведется ли прием резюме */
+  recruiting: Scalars['Boolean'];
   /** дата основания компании */
   registered: Scalars['Float'];
+  /** текущие резюме */
+  summaries: Array<Worker>;
   /** склады */
   warehouses: Array<Warehouse>;
-  /** рабочая сила */
-  workers: Workers;
+  /** рабочие */
+  workers: Array<Worker>;
 };
 
 export type Contract = {
@@ -76,6 +80,7 @@ export type Mutation = {
   createProdLine: Scalars['Float'];
   createUser: Scalars['String'];
   pushUserCompany: Scalars['Boolean'];
+  switchRecruiting: Scalars['Float'];
   transferBalanceToCompany: Scalars['Int'];
 };
 
@@ -101,6 +106,12 @@ export type MutationCreateUserArgs = {
 export type MutationPushUserCompanyArgs = {
   companyID: Scalars['String'];
   docID: Scalars['String'];
+};
+
+
+export type MutationSwitchRecruitingArgs = {
+  companyID: Scalars['String'];
+  value: Scalars['Boolean'];
 };
 
 
@@ -205,10 +216,13 @@ export type WarehouseProduct = {
   workersPerProduct: Scalars['Float'];
 };
 
-export type Workers = {
-  __typename?: 'Workers';
-  highEducated: Scalars['Float'];
-  total: Scalars['Float'];
+export type Worker = {
+  __typename?: 'Worker';
+  baseProduction: Scalars['Float'];
+  gender: Scalars['String'];
+  highEducated: Scalars['Boolean'];
+  name: Scalars['String'];
+  salary: Scalars['Float'];
 };
 
 export type CreateCompanyMutationVariables = Exact<{
@@ -245,6 +259,14 @@ export type TransferBalanceToCompanyMutationVariables = Exact<{
 
 export type TransferBalanceToCompanyMutation = { __typename?: 'Mutation', transferBalanceToCompany: number };
 
+export type SetCompanyRecruitingMutationVariables = Exact<{
+  companyID: Scalars['String'];
+  value: Scalars['Boolean'];
+}>;
+
+
+export type SetCompanyRecruitingMutation = { __typename?: 'Mutation', switchRecruiting: number };
+
 export type CreateUserMutationVariables = Exact<{
   vkUserId: Scalars['Float'];
 }>;
@@ -272,7 +294,7 @@ export type CompanyQueryVariables = Exact<{
 }>;
 
 
-export type CompanyQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: string, name: string, location: string, logo: string, owner: string, balance: number, registered: number, prodLines: Array<string>, workers: { __typename?: 'Workers', highEducated: number, total: number }, contracts: Array<{ __typename?: 'Contract', id: string }>, warehouses: Array<{ __typename?: 'Warehouse', total: number, stored: { __typename?: 'WarehouseProduct', count: number, spaceRequirements: number } }>, production?: { __typename?: 'Production', type: { __typename?: 'Product', type: string } } | null } | null };
+export type CompanyQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: string, name: string, location: string, logo: string, owner: string, balance: number, recruiting: boolean, registered: number, prodLines: Array<string>, contracts: Array<{ __typename?: 'Contract', id: string }>, warehouses: Array<{ __typename?: 'Warehouse', total: number, stored: { __typename?: 'WarehouseProduct', count: number, spaceRequirements: number } }>, production?: { __typename?: 'Production', type: { __typename?: 'Product', type: string } } | null, summaries: Array<{ __typename?: 'Worker', salary: number, gender: string, name: string, baseProduction: number, highEducated: boolean }>, workers: Array<{ __typename?: 'Worker', salary: number, gender: string, name: string, baseProduction: number, highEducated: boolean }> } | null };
 
 export type GetProductMetaQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -410,6 +432,38 @@ export function useTransferBalanceToCompanyMutation(baseOptions?: Apollo.Mutatio
 export type TransferBalanceToCompanyMutationHookResult = ReturnType<typeof useTransferBalanceToCompanyMutation>;
 export type TransferBalanceToCompanyMutationResult = Apollo.MutationResult<TransferBalanceToCompanyMutation>;
 export type TransferBalanceToCompanyMutationOptions = Apollo.BaseMutationOptions<TransferBalanceToCompanyMutation, TransferBalanceToCompanyMutationVariables>;
+export const SetCompanyRecruitingDocument = gql`
+    mutation SetCompanyRecruiting($companyID: String!, $value: Boolean!) {
+  switchRecruiting(companyID: $companyID, value: $value)
+}
+    `;
+export type SetCompanyRecruitingMutationFn = Apollo.MutationFunction<SetCompanyRecruitingMutation, SetCompanyRecruitingMutationVariables>;
+
+/**
+ * __useSetCompanyRecruitingMutation__
+ *
+ * To run a mutation, you first call `useSetCompanyRecruitingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetCompanyRecruitingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setCompanyRecruitingMutation, { data, loading, error }] = useSetCompanyRecruitingMutation({
+ *   variables: {
+ *      companyID: // value for 'companyID'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useSetCompanyRecruitingMutation(baseOptions?: Apollo.MutationHookOptions<SetCompanyRecruitingMutation, SetCompanyRecruitingMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetCompanyRecruitingMutation, SetCompanyRecruitingMutationVariables>(SetCompanyRecruitingDocument, options);
+      }
+export type SetCompanyRecruitingMutationHookResult = ReturnType<typeof useSetCompanyRecruitingMutation>;
+export type SetCompanyRecruitingMutationResult = Apollo.MutationResult<SetCompanyRecruitingMutation>;
+export type SetCompanyRecruitingMutationOptions = Apollo.BaseMutationOptions<SetCompanyRecruitingMutation, SetCompanyRecruitingMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($vkUserId: Float!) {
   createUser(vkUserID: $vkUserId)
@@ -525,14 +579,11 @@ export const CompanyDocument = gql`
     location
     logo
     owner
-    workers {
-      highEducated
-      total
-    }
     balance
     contracts {
       id
     }
+    recruiting
     warehouses {
       total
       stored {
@@ -547,6 +598,20 @@ export const CompanyDocument = gql`
     }
     registered
     prodLines
+    summaries {
+      salary
+      gender
+      name
+      baseProduction
+      highEducated
+    }
+    workers {
+      salary
+      gender
+      name
+      baseProduction
+      highEducated
+    }
   }
 }
     `;

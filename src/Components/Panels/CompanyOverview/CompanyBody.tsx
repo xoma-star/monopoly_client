@@ -54,15 +54,15 @@ export const CompanyBody = () => {
                 Свободные средства
             </Cell>
         </Group>
-        {company.workers.total > 0 && <Group header={<Header mode={'tertiary'}>Рабочая сила</Header>}>
-            <Cell after={company.workers.total} before={<Icon28EmployeeOutline/>}>
-                Рабочие
-            </Cell>
-            <Cell after={company.workers.highEducated} before={<Icon28EducationOutline/>}
-                  description={'из общего кол-ва рабочих'}>
-                Высококвалифицированнные
-            </Cell>
-        </Group>}
+        {/*{company.workers.total > 0 && <Group header={<Header mode={'tertiary'}>Рабочая сила</Header>}>*/}
+        {/*    <Cell after={company.workers.total} before={<Icon28EmployeeOutline/>}>*/}
+        {/*        Рабочие*/}
+        {/*    </Cell>*/}
+        {/*    <Cell after={company.workers.highEducated} before={<Icon28EducationOutline/>}*/}
+        {/*          description={'из общего кол-ва рабочих'}>*/}
+        {/*        Высококвалифицированнные*/}
+        {/*    </Cell>*/}
+        {/*</Group>}*/}
         {company.production && <Group header={<Header mode={'tertiary'}>Производство</Header>}>
             <Cell before={<Icon28CubeBoxOutline/>} description={'производимая продукция'}>
                 Микропроцессоры
