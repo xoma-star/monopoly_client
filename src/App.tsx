@@ -22,15 +22,17 @@ import {CompanyManagePanel} from "./Components/Panels/CompanyManage";
 import {getLast} from "./Functions/getLast";
 import {RootModal} from "./Components/Modals";
 import {useVKBridge} from "./Hooks/useVKBridge";
+import {useHistoryApi} from "./Hooks/useHistoryApi";
 
 const App = () => {
     useVKBridge()
     useFirebase()
+    useHistoryApi()
     const VKUI = useTypedSelector(s => s.vkui)
     const user = useTypedSelector(s => s.user)
     const screenSpinnerCondition = !user.docId
 
-    return <ConfigProvider scheme={VKUI.scheme} platform={Platform.IOS}>
+    return <ConfigProvider scheme={VKUI.scheme}>
         <AdaptivityProvider>
             <AppRoot>
                 <SplitLayout modal={<RootModal activeModal={getLast(VKUI.modal)}/>} popout={screenSpinnerCondition && <ScreenSpinner/>}>

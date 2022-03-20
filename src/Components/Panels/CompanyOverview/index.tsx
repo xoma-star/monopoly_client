@@ -1,6 +1,6 @@
 import {CompanyHeader} from "../../Common/Blocks/CompanyHeader";
 import React from "react";
-import {PanelHeader, PanelHeaderClose, Spinner} from "@vkontakte/vkui";
+import {PanelHeader, PanelHeaderBack, Spinner} from "@vkontakte/vkui";
 import {useActions} from "../../../Hooks/useActions";
 import {useTypedSelector} from "../../../Hooks/useTypedSelector";
 import {useCompanyQuery} from "../../../generated/graphql";
@@ -13,7 +13,7 @@ export const CompanyOverviewPanel = () => {
 
     if (!data?.company || loading) return <Spinner/>
     return <React.Fragment>
-        <PanelHeader left={<PanelHeaderClose onClick={VKUIHistoryBack}/>}>Компания</PanelHeader>
+        <PanelHeader left={<PanelHeaderBack onClick={VKUIHistoryBack}/>}>Компания</PanelHeader>
         <CompanyHeader logo={data.company.logo} name={data.company.name}/>
         <CompanyBody/>
     </React.Fragment>

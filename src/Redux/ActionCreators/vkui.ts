@@ -24,6 +24,7 @@ export const setActiveCompany = (c: string) => {
 
 export const VKUIhistoryPush = (p: VKUIhistory) => {
     return (dispatch: Dispatch<VKUIAction>) => {
+        window.history.pushState({}, '')
         dispatch({type: VKUIActionTypes.HISTORY_PUSH, payload: p})
     }
 }
@@ -36,6 +37,7 @@ export const VKUIHistoryBack = () => {
 
 export const VKUIModalSet = (p: null | VKUIModals) => {
     return (dispatch: Dispatch<VKUIAction>) => {
+        window.history.pushState({}, '')
         dispatch({type: VKUIActionTypes.SET_MODAL, payload: p})
     }
 }
