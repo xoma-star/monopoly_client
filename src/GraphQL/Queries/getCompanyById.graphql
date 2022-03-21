@@ -26,6 +26,7 @@ query Company($companyId: String!) {
             name
             baseProduction
             highEducated
+            hash
         }
         workers{
             salary
@@ -33,6 +34,7 @@ query Company($companyId: String!) {
             name
             baseProduction
             highEducated
+            hash
         }
     }
 }

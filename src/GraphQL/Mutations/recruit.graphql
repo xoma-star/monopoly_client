@@ -1,0 +1,10 @@
+mutation RecruitWorker($companyID: String!, $workerHash: String!) {
+    recruit(companyID: $companyID, workerHash: $workerHash){
+        salary
+        gender
+        name
+        baseProduction
+        highEducated
+        hash
+    }
+}

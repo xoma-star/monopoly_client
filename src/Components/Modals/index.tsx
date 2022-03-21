@@ -11,7 +11,7 @@ import {CompanyManageWarehousesModal} from "./CompanyManage/Warehouses";
 import CompanyManageProductionModal from "./CompanyManage/Production";
 import {CompanyManageProductionNewModal} from "./CompanyManage/ProductionNew";
 import {WorkersVacancyCard} from "./CompanyManage/VacancyCard";
-import {CompanyManageSummaries} from "./CompanyManage/Summaries";
+import CompanyManageSummaries from "./CompanyManage/Summaries";
 
 interface props{
     activeModal: string | null
